@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSU Chatbot</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+#chat-box {
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    border: 1px solid #ccc;
+    background: #fff;
+    overflow-y: scroll;
+    padding: 10px;
+    margin: 20px auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+    text-align: right;
+    color: #007bff;
+    margin: 5px;
+}
+
+.bot-message {
+    text-align: left;
+    color: #28a745;
+    margin: 5px;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+a {
+    color: #ff5722;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <h1>Welcome to DSU Chatbot</h1>
+    <div id="chat-box">
+        <div class="bot-message">Hello! Ask me about holidays, PDFs, or important questions!</div>
+    </div>
+    <input id="user-input" type="text" placeholder="Ask me anything...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
