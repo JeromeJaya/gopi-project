@@ -56,7 +56,7 @@ function getHolidayInfo(eventName) {
         for (const key in holidays) {
             response += `<b>${key}</b>: ${holidays[key].date} - ${holidays[key].days} day(s)<br>`;
         }
-        return response;
+        return eventName;
     }
 
     // Case-insensitive search
