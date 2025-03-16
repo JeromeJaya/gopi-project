@@ -21,21 +21,67 @@ const facultyInfo = {
     "HRDC": { "name": "Mr. A. James Anto & Ms. Lavanya", "role": "Soft Skills & Aptitude" }
 };
 
-function sendMessage() {
-    const userInput = document.getElementById("user-input").value;
-    const chatBox = document.getElementById("chat-box");
+// JSON data for holidays
+const holidayData = {
+    "holidays": {
+        "English New Year": { "date": "01.01.25", "days": 1 },
+        "Pongal": { "date": "15.01.25", "days": 9 },
+        "Republic Day": { "date": "26.01.25", "days": 1 },
+        "ThaiPoosam": { "date": "10.02.25", "days": 4 },
+        "Telugu New Year": { "date": "31.03.25", "days": 5 },
+        "Tamil New Year": { "date": "15.04.25", "days": 11 },
+        "May Day": { "date": "01.05.25", "days": 1 },
+        "Bakrid": { "date": "07.06.25", "days": 1 },
+        "Muharram": { "date": "06.07.25", "days": 1 },
+        "Independence Day": { "date": "15.08.25", "days": 1 },
+        "Ganesh Chaturthi": { "date": "27.08.25", "days": 1 },
+        "Onam": { "date": "05.09.25", "days": 5 },
+        "Pooja": { "date": "02.10.25", "days": 5 },
+        "Diwali": { "date": "20.10.25", "days": 5 },
+        "Christmas": { "date": "25.12.25", "days": 8 }
+    }
+};
 
-    if (userInput.trim() === "")
-        return;
 
-    chatBox.innerHTML += `<div class="user-message">User: ${userInput}</div>`;
+function getHolidayInfo(eventName) {
+    const holidays = holidayData.holidays;
+    const eventLower = eventName.trim().toLowerCase(); // Normalize input
 
-    const response = getResponse(userInput);
-    chatBox.innerHTML += `<div class='bot-message'>Bot: ${response}</div>`;
+    console.log("User Input:", eventName); // Debugging
+    console.log("Extracted Event:", eventLower); // Debugging
 
-    document.getElementById("user-input").value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
+    // If no specific holiday is mentioned, return all holidays
+    if (!eventLower || eventLower === "holiday") {
+        let response = "<b>List of Holidays:</b><br>";
+        for (const key in holidays) {
+            response += `<b>${key}</b>: ${holidays[key].date} - ${holidays[key].days} day(s)<br>`;
+        }
+        return response;
+    }
+
+    // Case-insensitive search
+    for (const key in holidays) {
+        if (key.toLowerCase() === eventLower) {
+            return `Holiday for <b>${key}</b> starts on <b>${holidays[key].date}</b> and lasts for <b>${holidays[key].days}</b> day(s).`;
+        }
+    }
+    return "No holiday found for the entered event. Please check the spelling!";
 }
+
+function getResponse(input) {
+    const message = input.trim();
+    
+    console.log("User Message:", message); // Debugging
+
+    if (message.toUpperCase().includes("HOLIDAY")) {
+        const holidayName = message.replace(/holi(day)?/i, "").trim(); // Remove "holiday"
+        console.log("Extracted Holiday Name:", holidayName); // Debugging
+        return getHolidayInfo(holidayName);
+    }
+    return "I can help with timetable, faculty details, holiday info, etc. Try asking: 'Holiday for Tamil New Year' or just 'Holiday'.";
+}
+
+
 
 function getResponse(input) {
     const message = input.toUpperCase().trim();
@@ -49,10 +95,14 @@ function getResponse(input) {
     if (message.includes("FACULTY")) {
         return getFacultyInfo(message);
     }
+    if (message.includes("HOLIDAY")) {
+        const holidayName = message.split("HOLIDAY")[1].trim(); // Extract holiday name
+        return getHolidayInfo(holidayName);
+    }
     if (message.includes("PDF")) {
         return '<a href="timetable.pdf" download>Click to download Timetable PDF</a>';
     }
-    return "I can help with timetable, period info, faculty details, and PDF downloads! Try asking: 'What’s the 3rd period on Monday?' or 'Faculty for Web Mining'.";
+    return "I can help with timetable, period info, faculty details, holiday info, and PDF downloads! Try asking: 'What’s the 3rd period on Monday?' or 'Faculty for Web Mining' or 'Holiday for Tamil New Year'.";
 }
 
 function listTimetable() {
@@ -87,3 +137,26 @@ function getFacultyInfo(message) {
     }
     return "Faculty info not found!";
 }
+
+function sendMessage() {
+    const userInput = document.getElementById("user-input").value;
+    const chatBox = document.getElementById("chat-box");
+
+    if (userInput.trim() === "") {
+        return;
+    }
+
+    // Display user message
+    chatBox.innerHTML += `<div class="user-message">:User   ${userInput}</div>`;
+
+    // Get response from the chatbot
+    const response = getResponse(userInput);
+    
+    // Display bot response
+    chatBox.innerHTML += `<div class='bot-message'>Bot: ${response}</div>`;
+
+    // Clear input field
+    document.getElementById("user-input").value = ""; 
+    // Scroll to the bottom of the chat box
+    chatBox.scrollTop = chatBox.scrollHeight; 
+         }
